@@ -31,12 +31,12 @@ services:
     expose:
       - 8080
     environment:
-      - HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:${POSTGRES_PASSWORD:-secretpgpassword}@postgres:5432/postgres
-      - HASURA_GRAPHQL_JWT_SECRET: ${HASURA_GRAPHQL_JWT_SECRET}
-      - HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
-      - HASURA_GRAPHQL_UNAUTHORIZED_ROLE: public
-      - HASURA_GRAPHQL_LOG_LEVEL: debug
-      - HASURA_GRAPHQL_ENABLE_CONSOLE: 'true'
+      - HASURA_GRAPHQL_DATABASE_URL=postgres://postgres:${POSTGRES_PASSWORD:-secretpgpassword}@postgres:5432/postgres
+      - HASURA_GRAPHQL_JWT_SECRET=${HASURA_GRAPHQL_JWT_SECRET}
+      - HASURA_GRAPHQL_ADMIN_SECRET=${HASURA_GRAPHQL_ADMIN_SECRET}
+      - HASURA_GRAPHQL_UNAUTHORIZED_ROLE=public
+      - HASURA_GRAPHQL_LOG_LEVEL=debug
+      - HASURA_GRAPHQL_ENABLE_CONSOLE='true'
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.hasura.rule=Host(`localhost`) && PathPrefix(`/`)"
@@ -50,17 +50,17 @@ services:
     volumes:
       - ./emails:/app/email-templates
     environment:
-      - AUTH_HOST: '0.0.0.0'
-      - HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:${POSTGRES_PASSWORD:-secretpgpassword}@postgres:5432/postgres
-      - HASURA_GRAPHQL_GRAPHQL_URL: http://graphql-engine:8080/v1/graphql
-      - HASURA_GRAPHQL_JWT_SECRET: ${HASURA_GRAPHQL_JWT_SECRET}
-      - HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
-      - AUTH_CLIENT_URL: ${AUTH_CLIENT_URL:-http://localhost:3000}
-      - AUTH_SMTP_HOST: mailhog
-      - AUTH_SMTP_PORT: 1025
-      - AUTH_SMTP_USER: user
-      - AUTH_SMTP_PASS: password
-      - AUTH_SMTP_SENDER: mail@example.com
+      - AUTH_HOST='0.0.0.0'
+      - HASURA_GRAPHQL_DATABASE_URL=postgres://postgres:${POSTGRES_PASSWORD:-secretpgpassword}@postgres:5432/postgres
+      - HASURA_GRAPHQL_GRAPHQL_URL=http://graphql-engine:8080/v1/graphql
+      - HASURA_GRAPHQL_JWT_SECRET=${HASURA_GRAPHQL_JWT_SECRET}
+      - HASURA_GRAPHQL_ADMIN_SECRET=${HASURA_GRAPHQL_ADMIN_SECRET}
+      - AUTH_CLIENT_URL=${AUTH_CLIENT_URL:-http://localhost:3000}
+      - AUTH_SMTP_HOST=mailhog
+      - AUTH_SMTP_PORT=1025
+      - AUTH_SMTP_USER=user
+      - AUTH_SMTP_PASS=password
+      - AUTH_SMTP_SENDER=mail@example.com
     expose: 
       - 4000
     labels:
@@ -79,16 +79,16 @@ services:
     expose:
       - 8000
     environment:
-      - PUBLIC_URL: http://localhost:${PROXY_PORT:-1337}
-      - HASURA_METADATA: 1
-      - HASURA_ENDPOINT: http://graphql-engine:8080/v1
-      - HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
-      - S3_ACCESS_KEY: ${STORAGE_ACCESS_KEY}
-      - S3_SECRET_KEY: ${STORAGE_SECRET_KEY}
-      - S3_ENDPOINT: http://minio:8484
-      - S3_BUCKET: nhost
-      - POSTGRES_MIGRATIONS: 1
-      - POSTGRES_MIGRATIONS_SOURCE: postgres://postgres:${POSTGRES_PASSWORD:-secretpgpassword}@postgres:5432/postgres?sslmode=disable
+      - PUBLIC_URL=http://localhost:${PROXY_PORT:-1337}
+      - HASURA_METADATA=1
+      - HASURA_ENDPOINT=http://graphql-engine:8080/v1
+      - HASURA_GRAPHQL_ADMIN_SECRET=${HASURA_GRAPHQL_ADMIN_SECRET}
+      - S3_ACCESS_KEY=${STORAGE_ACCESS_KEY}
+      - S3_SECRET_KEY=${STORAGE_SECRET_KEY}
+      - S3_ENDPOINT=http://minio:8484
+      - S3_BUCKET=nhost
+      - POSTGRES_MIGRATIONS=1
+      - POSTGRES_MIGRATIONS_SOURCE=postgres://postgres:${POSTGRES_PASSWORD:-secretpgpassword}@postgres:5432/postgres?sslmode=disable
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.storage.rule=Host(`localhost`) && PathPrefix(`/v1/storage`)"
@@ -119,8 +119,8 @@ services:
     entrypoint: sh
     command: -c 'mkdir -p /data/nhost && /opt/bin/minio server --address :8484 /data'
     environment:
-      - MINIO_ROOT_USER: ${STORAGE_ACCESS_KEY}
-      - MINIO_ROOT_PASSWORD: ${STORAGE_SECRET_KEY}
+      - MINIO_ROOT_USER=${STORAGE_ACCESS_KEY}
+      - MINIO_ROOT_PASSWORD=${STORAGE_SECRET_KEY}
     ports:
       - ${MINIO_PORT:-8484}:8484
     volumes:
@@ -128,12 +128,12 @@ services:
   mailhog:
     image: mailhog/mailhog
     environment:
-      - SMTP_HOST: ${AUTH_SMTP_HOST:-mailhog}
-      - SMTP_PORT: ${AUTH_SMTP_PORT:-1025}
-      - SMTP_PASS: ${AUTH_SMTP_PASS:-password}
-      - SMTP_USER: ${AUTH_SMTP_USER:-user}
-      - SMTP_SECURE: "${AUTH_SMTP_SECURE:-false}"
-      - SMTP_SENDER: ${AUTH_SMTP_SENDER:-hbp@hbp.com}
+      - SMTP_HOST=${AUTH_SMTP_HOST:-mailhog}
+      - SMTP_PORT=${AUTH_SMTP_PORT:-1025}
+      - SMTP_PASS=${AUTH_SMTP_PASS:-password}
+      - SMTP_USER=${AUTH_SMTP_USER:-user}
+      - SMTP_SECURE="${AUTH_SMTP_SECURE:-false}"
+      - SMTP_SENDER=${AUTH_SMTP_SENDER:-hbp@hbp.com}
     ports:
       - ${AUTH_SMTP_PORT:-1025}:1025 
       - 8025:8025
